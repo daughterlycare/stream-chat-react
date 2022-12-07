@@ -46,6 +46,14 @@ const ImagePreviewItem = ({ id }: PreviewItemProps) => {
   // do not display scraped attachments
   if (!image || image.og_scrape_url) return null;
 
+  // Override URL hostname with current hostname - for Moonbeam compatibility
+  var src = image.previewUri || image.url
+  try {
+      const url = new URL(src)
+      url.hostname = window.location.hostname
+      src = url.toString()
+  } catch {}
+
   return (
     <div className='str-chat__attachment-preview-image' data-testid='attachment-preview-image'>
       <button
@@ -73,11 +81,11 @@ const ImagePreviewItem = ({ id }: PreviewItemProps) => {
         </div>
       )}
 
-      {(image.previewUri || image.url) && (
+      {(src) && (
         <img
           alt={image.file.name}
           className='str-chat__attachment-preview-thumbnail'
-          src={image.previewUri ?? image.url}
+          src={src}
         />
       )}
     </div>
@@ -100,6 +108,14 @@ const FilePreviewItem = ({ id }: PreviewItemProps) => {
   const state = useFileState(file);
 
   if (!file) return null;
+
+  // Override URL hostname with current hostname - for Moonbeam compatibility
+  var src = file.url
+  try {
+      const url = new URL(src)
+      url.hostname = window.location.hostname
+      src = url.toString()
+  } catch {}
 
   return (
     <div className='str-chat__attachment-preview-file' data-testid='attachment-preview-file'>
@@ -132,7 +148,7 @@ const FilePreviewItem = ({ id }: PreviewItemProps) => {
           <a
             className='str-chat__attachment-preview-file-download'
             download
-            href={file.url}
+            href={src}
             rel='noreferrer'
             target='_blank'
           >
