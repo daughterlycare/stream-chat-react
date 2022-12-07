@@ -47,7 +47,7 @@ const ImagePreviewItem = ({ id }: PreviewItemProps) => {
   if (!image || image.og_scrape_url) return null;
 
   // Override URL hostname with current hostname - for Moonbeam compatibility
-  var src = image.previewUri || image.url
+  var src = image.previewUri || image.url || ''
   try {
       const url = new URL(src)
       url.hostname = window.location.hostname
@@ -110,7 +110,7 @@ const FilePreviewItem = ({ id }: PreviewItemProps) => {
   if (!file) return null;
 
   // Override URL hostname with current hostname - for Moonbeam compatibility
-  var src = file.url
+  var src = file.url || ''
   try {
       const url = new URL(src)
       url.hostname = window.location.hostname
