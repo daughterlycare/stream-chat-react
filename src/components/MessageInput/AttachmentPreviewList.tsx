@@ -155,7 +155,6 @@ const FilePreviewItem = ({ id }: PreviewItemProps) => {
         {state.finished && (
           <a
             className='str-chat__attachment-preview-file-download'
-            download
             href={src}
             rel='noreferrer'
             target='_blank'

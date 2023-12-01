@@ -10,7 +10,6 @@ type DownloadButtonProps = {
 export const DownloadButton = ({ assetUrl }: DownloadButtonProps) => (
   <SafeAnchor
     className='str-chat__message-attachment-file--item-download'
-    download
     href={assetUrl}
     target='_blank'
   >
