@@ -50,6 +50,14 @@ export const ImagePreviewItem = ({ id }: PreviewItemProps) => {
   // do not display scraped attachments
   if (!image || image.og_scrape_url) return null;
 
+  // Override URL hostname with current hostname - for Moonbeam compatibility
+  let src = image.previewUri || image.url || ''
+  try {
+    const url = new URL(src)
+    url.hostname = window.location.hostname
+    src = url.toString()
+  } catch {}
+
   return (
     <div
       className={clsx('str-chat__attachment-preview-image', {
@@ -82,12 +90,12 @@ export const ImagePreviewItem = ({ id }: PreviewItemProps) => {
         </div>
       )}
 
-      {(image.previewUri || image.url) && (
+      {src && (image.previewUri || image.url) && (
         <BaseImage
           alt={image.file.name}
           className='str-chat__attachment-preview-thumbnail'
           onError={handleLoadError}
-          src={image.previewUri ?? image.url}
+          src={src}
           title={image.file.name}
         />
       )}
@@ -111,6 +119,14 @@ const FilePreviewItem = ({ id }: PreviewItemProps) => {
   const state = useFileState(file);
 
   if (!file) return null;
+
+  // Override URL hostname with current hostname - for Moonbeam compatibility
+  let src = file.url ?? ''
+  try {
+    const url = new URL(src)
+    url.hostname = window.location.hostname
+    src = url.toString()
+  } catch {}
 
   return (
     <div className='str-chat__attachment-preview-file' data-testid='attachment-preview-file'>
@@ -139,11 +155,11 @@ const FilePreviewItem = ({ id }: PreviewItemProps) => {
 
       <div className='str-chat__attachment-preview-file-end'>
         <div className='str-chat__attachment-preview-file-name'>{file.file.name}</div>
-        {state.finished && (
+        {src && state.finished && (
           <a
             className='str-chat__attachment-preview-file-download'
             download
-            href={file.url}
+            href={src}
             rel='noreferrer'
             target='_blank'
           >
